@@ -1,12 +1,16 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { UserButton } from "@/features/auth/components/user-button";
+import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
 import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 import {useAuthActions} from "@convex-dev/auth/react"
 import { useEffect, useMemo } from "react";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
 
+  const [open, setOpen] = useCreateWorkspaceModal();
 
   const  {data, isLoading} = useGetWorkspaces();
 
@@ -17,10 +21,11 @@ export default function Home() {
 
     if(workspaceId){
       console.log("Redirect to workspace")
-    }else{
-      console.log("Open creation modal")
+      router.replace(`/workspac/${workspaceId}`);
+    }else if (!open){
+      setOpen(true);
     }
-  }, [workspaceId, isLoading]);
+  }, [workspaceId, isLoading, open, setOpen]);
   return (
     <div>
       
