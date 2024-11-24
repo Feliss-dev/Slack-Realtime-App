@@ -8,7 +8,7 @@ import {
 import { useCreateWorkspaceModal } from "../store/use-create-workspace-modal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCreatrWorkspace } from "../api/use-create-workspace";
+import { useCreateWorkspace } from "../api/use-create-workspace";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -18,7 +18,7 @@ export const CreateWorkspaceModal = () => {
   const [open, setOpen] = useCreateWorkspaceModal();
   const [name, setName] = useState("");
 
-  const { mutate, isPending } = useCreatrWorkspace();
+  const { mutate, isPending } = useCreateWorkspace();
 
   const handleClose = () => {
     setOpen(false);
