@@ -29,6 +29,8 @@ export const WorkspaceHeader = ({
     <InviteModal
     open={inviteOpen}
     setOpen={setInviteOpen}
+    name={workspace.name}
+    joinCode={workspace.joinCode}
     />
     <PreferencesModal open={preferencesOpen} setOpen={setPreferencesOpen} initialValue={workspace.name}/>
     <div className="flex items-center justify-between px-4 h-[49px] gap-0.5 ">
