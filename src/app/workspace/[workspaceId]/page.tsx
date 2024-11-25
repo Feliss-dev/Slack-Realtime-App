@@ -27,14 +27,14 @@ const WorkspaceIdPage = () => {
   useEffect(() => {
       if(workspaceLoading || channelsLoading || !workspace || memberLoading || !member ) return;
 
-      if(!channelId) {
+      if(channelId) {
         router.push(`/workspace/${workspaceId}/channel/${channelId}`);
       }else if (!open && !isAdmin) {
         setOpen(true);
       }
   }, [channelId, workspaceLoading, channelsLoading, workspace, open, setOpen, router, workspaceId, member, memberLoading, isAdmin]);
 
-  if(workspaceLoading || channelsLoading){
+  if(workspaceLoading || channelsLoading || memberLoading){
     return(
       <div className="h-full flex-1 flex items-center justify-center flex-col gap-2"
       >
@@ -44,7 +44,7 @@ const WorkspaceIdPage = () => {
     )
   }
 
-  if(!workspace){
+  if(!workspace || !member){
     return(
       <div className="h-full flex-1 flex items-center justify-center flex-col gap-2"
       >
