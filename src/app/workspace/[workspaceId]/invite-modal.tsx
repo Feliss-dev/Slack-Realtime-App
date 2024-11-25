@@ -7,6 +7,7 @@ import {
   DialogHeader,
 } from "@/components/ui/dialog";
 import { useNewJoinCode } from "@/features/workspaces/api/use-new-join-code";
+import { useConfirm } from "@/hooks/use-confirm";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { CopyIcon, RefreshCcw } from "lucide-react";
@@ -25,10 +26,14 @@ export const InviteModal = ({
   joinCode,
 }: InviteModalProps) => {
   const workspaceId = useWorkspaceId();
+  const [ConfirmDialog, confirm] = useConfirm("Are you sure?", "This will deactive the current invite code and generate a new one.");
 
   const { mutate, isPending } = useNewJoinCode();
 
-  const handleNewCode = () => {
+  const handleNewCode = async () => {
+
+    const ok = await confirm();
+    if(!ok) return;
     mutate(
       { workspaceId },
       {
@@ -50,6 +55,8 @@ export const InviteModal = ({
       .then(() => toast.success("Copied to clipboard"));
   };
   return (
+    <>
+    <ConfirmDialog />
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
@@ -79,5 +86,6 @@ export const InviteModal = ({
         </div>
       </DialogContent>
     </Dialog>
+    </>
   );
 };
