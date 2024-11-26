@@ -63,9 +63,31 @@ const Editor = ({
             container.ownerDocument.createElement("div"),
         );
 
+        //Enter no add new line
+        //Shift Enter add new line
         const options: QuillOptions = {
             theme: "snow",
             placeholder: placeholderRef.current,
+            modules: {
+                keyboard:{
+                    bindings:{
+                        enter:{
+                            key: "Enter",
+                            handler: () => {
+                                //TODO Submit form
+                                return;
+                            }
+                        },
+                        shift_enter: {
+                            key: "Enter",
+                            shiftKey: true,
+                            handler: () => {
+                                quill.insertText(quill.getSelection()?.index ?? 0, "\n");
+                            }
+                        },
+                    }
+                }
+            }
 
         };
 
