@@ -7,6 +7,7 @@ import { ImageIcon, Smile } from 'lucide-react';
 import {MdSend} from "react-icons/md"
 import { Hint } from '../hint';
 import { Delta, Op } from 'quill/core';
+import { cn } from '@/lib/utils';
 
 type EditorValue = {
     image: File | null;
@@ -31,6 +32,7 @@ const Editor = ({
     placeholder = "Write something...",
     defaultValue = [],
     innerRef,
+    disabled,
     variant = "create"}: EditorProps) => {
 
     const [text, setText] = useState("");
@@ -76,12 +78,29 @@ const Editor = ({
         }
 
         quill.setContents(defaultValueRef.current);
+        setText(quill.getText());
+
+        quill.on(Quill.events.TEXT_CHANGE, () => {
+            setText(quill.getText());
+        });
+
         return () => {
+            quill.off(Quill.events.TEXT_CHANGE);
             if(container){
                 container.innerHTML = "";
             }
+            if(quillRef.current){
+                quillRef.current = null;
+            }
+            if(innerRef){
+                innerRef.current = null;
+            }
         };
     }, [innerRef]);
+
+    const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+
+    console.log({isEmpty, text});
   return (
     <div className="flex flex-col">
         <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white">
@@ -143,10 +162,15 @@ const Editor = ({
 
                 {variant === "create" &&(
                      <Button
-                     disabled={false}
+                     disabled={disabled || isEmpty}
                      onClick={() => {}}
                      size="iconSm"
-                     className="ml-auto bg-[#007a5a] hover:bg-[#007a5a]/80 text-white">
+                     className={cn(
+                        "ml-auto",
+                        isEmpty ?
+                     
+                     "bg-white hover:bg-white text-muted-foreground"
+                     : "bg-[#007a5a] hover:bg-[#007a5a]/80 text-white")}>
                          <MdSend className="size-4"/>
                      </Button>
                 )}
