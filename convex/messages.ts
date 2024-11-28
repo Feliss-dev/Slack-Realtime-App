@@ -19,6 +19,7 @@ export const create = mutation({
         image: v.optional(v.id("_storage")),
         workspaceId: v.id("workspaces"),
         channelId: v.optional(v.id("channels")),
+        conversationId: v.optional(v.id("conversations")),
         parentMessageId: v.optional(v.id("messages")),
         //TODO: add conversationId
 
@@ -38,12 +39,25 @@ export const create = mutation({
         }
 
         //handle conversationId
+        let _conversationId = args.conversationId;
+
+        //Only possible if we are replying in a thread in 1:1 conversation
+        if(!args.conversationId&& args.channelId && args.parentMessageId){
+            const parentMessage = await ctx.db.get(args.parentMessageId);
+
+            if(!parentMessage){
+                throw new Error("Parent message not found");
+            }
+
+            _conversationId = parentMessage.conversationId;
+        }
 
         const messageId = await ctx.db.insert("messages", {
             memberId: member._id,
             body: args.body,
             image: args.image,
             workspaceId: args.workspaceId,
+            conversationId: _conversationId,
             channelId: args.channelId,
             parentMessageId: args.parentMessageId,
             updatedAt: Date.now(),
