@@ -4,6 +4,14 @@ import { auth } from "./auth";
 import { Id } from "./_generated/dataModel";
 import { threadId } from "worker_threads";
 
+const populateUser = (ctx: QueryCtx, userId: Id<"users">) => {
+    return ctx.db.get(userId);
+}
+
+ const populateMember = (ctx: QueryCtx, memberId: Id<"members">) => {
+    return ctx.db.get(memberId);
+}
+
 const getMember = async (ctx: QueryCtx,
     workspaceId: Id<"workspaces">,
      userId: Id<"users">) => {
