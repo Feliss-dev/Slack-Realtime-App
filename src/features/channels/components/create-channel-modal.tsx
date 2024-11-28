@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useCreateChannel } from "../api/use-create-channel";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const CreateChannelModal = () => {
   const workspaceId = useWorkspaceId();
@@ -23,7 +25,8 @@ export const CreateChannelModal = () => {
     const value = e.target.value.replace(/\s+/g, "-").toLowerCase();
     setName(value);
   };
-
+  
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate(
@@ -31,8 +34,13 @@ export const CreateChannelModal = () => {
       {
         onSuccess: (id) => {
           //TODO: REDIRECT TO NEW CHANNEL
+          toast.success("Channel created");
+          router.push(`/workspace/${workspaceId}/channel/${id}`);
           handleClose();
         },
+        onError: () => {
+          toast.error("Error creating channel");
+        }
       }
     );
   };

@@ -5,7 +5,7 @@ import VerificationInput from "react-verification-input";
 import OtpInput from "react-otp-input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useGetWorkspaceInfo } from "@/features/workspaces/api/use-get-workspace-info";
@@ -22,6 +22,8 @@ interface JoinPageProps {
 }
 
 const JoinPage = ({ params }: JoinPageProps) => {
+  const router = useRouter();
+
   const workspaceId = useWorkspaceId();
 
   const [otp, setOtp] = useState("");
@@ -30,7 +32,14 @@ const JoinPage = ({ params }: JoinPageProps) => {
 
   const {data, isLoading} = useGetWorkspaceInfo({id: workspaceId});
 
-  const router = useRouter();
+  const isMember = useMemo(() => data?.isMember, [data?.isMember]);
+
+  useEffect(() => {
+    if(isMember){
+      router.push(`/workspace/${workspaceId}`);
+    }
+  },[isMember, router, workspaceId]);
+
   const handleComplete = (value: string) => {
     mutate({workspaceId, joinCode: value},
       {
