@@ -35,8 +35,8 @@ const schema = defineSchema({
       memberTwoId: v.id("members"),
 
    })
-   .index("by_workspace_id", ["workspaceId"])
-   ,
+   .index("by_workspace_id", ["workspaceId"]),
+   
    messages: defineTable({
       body: v.string(),
       image: v.optional(v.id("_storage")),

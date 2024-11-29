@@ -3,6 +3,9 @@ import { Doc, Id } from "../../convex/_generated/dataModel";
 import { format, isToday, isYesterday } from "date-fns";
 import { Hint } from "./hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Thumbnail } from "./thumbnail";
+import { Toolbar } from "./toolbar";
+
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 
@@ -54,9 +57,13 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
+
+    console.log("image", image);
   if (isCompact) {
+    
+
     return (
-      <>
+    
         <div className="flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative">
           <div className="flex items-start gap-2">
             <Hint label={formatFullTime(new Date(createdAt))}>
@@ -66,6 +73,10 @@ export const Message = ({
             </Hint>
             <div className="flex flex-col w-full">
           <Renderer value={body} />
+          <Thumbnail url={image}/>
+          
+          
+
           {updatedAt ? (
             <span className="text-sm text-muted-foreground">(edited)</span>
           ): null}
@@ -73,13 +84,13 @@ export const Message = ({
             </div>
           </div>
         </div>
-      </>
+      
     );
   }
 
   const avatarFallback = authorName.charAt(0).toUpperCase();
   return (
-    <>
+    
       <div className="flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative">
         <div className="flex items-start gap-2">
           <button>
@@ -105,12 +116,24 @@ export const Message = ({
               </Hint>
             </div>
             <Renderer value={body} />
+            <Thumbnail url={image}/>
             {updatedAt ? (
                 <span className="text-sm text-muted-foreground">(edited)</span>
             ): null}
           </div>
         </div>
+        {!isEditing && (
+            <Toolbar
+            isAuthor={isAuthor}
+            isPending={false}
+            handleEdit={() => setEditingId(id)}
+            handleDelete={() => {}}
+            handleThread={() => {}}
+            handleReaction={() => {}}
+            hideThreadButton={hideThreadButton}
+            />
+        )}
       </div>
-    </>
+    
   );
 };

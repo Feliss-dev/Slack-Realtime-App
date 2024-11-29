@@ -5,14 +5,14 @@ import { useCallback, useMemo, useState } from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import Error from "next/error";
 
-type RequestType = {body: string,
-    image?: Id<"_storage">,
+type RequestType = {
+    body: string,
     workspaceId: Id<"workspaces">, 
+    image?: Id<"_storage">,
     channelId?: Id<"channels">,
     parentMessageId?: Id<"messages">,
     conversationId?: Id<"conversations">,
-                    //TODO: add conversationId
-                    };
+ };
 type ResponseType = Id<"messages"> | null;
 type Options = {
     onSuccess?: (data: ResponseType) => void;

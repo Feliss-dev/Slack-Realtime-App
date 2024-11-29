@@ -49,6 +49,7 @@ export const MessageList = ({
         {} as Record<string, typeof data>
     )
 
+   
     return (
         <div className="flex-1 flex flex-col-reverse pb-4 overflow-y-auto messages-scrollbar">
            {Object.entries(groupedMessages || {}).map(([dateKey, messages]) => (
@@ -69,6 +70,8 @@ export const MessageList = ({
                             differenceInMinutes(
                                 new Date(message._creationTime),
                                 new Date(prevMessage._creationTime)) < TIME_THRESHOLD;
+                                
+
                        return (
                        <Message
                         key={message._id}
@@ -101,5 +104,7 @@ export const MessageList = ({
 
            ))}
         </div>
+        
     );
+    
 }

@@ -17,7 +17,7 @@ const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) =>{
         return {
             count: 0,
             image: undefined,
-            timestamo: 0,
+            timestamp: 0,
         };
     }
 
@@ -26,13 +26,16 @@ const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) =>{
 
     if(!lastMessageMember){
         return {
-            count: messages.length,
+            count: 0,
             image: undefined,
             timestamp: 0,
         };
     }
 
     const lastMessageUser = await populateUser(ctx, lastMessageMember.userId);
+
+        // Log the thread image URL
+        console.log("Thread image URL:", lastMessageUser?.image); // <-- Add this log
     return {
         count: messages.length,
         image: lastMessageUser?.image,
@@ -45,21 +48,24 @@ const populateReactions = (ctx: QueryCtx, messageId: Id<"messages">) =>{
 };
 
 const populateUser = (ctx: QueryCtx, userId: Id<"users">) => {
+   
     return ctx.db.get(userId);
+    
 }
 
  const populateMember = (ctx: QueryCtx, memberId: Id<"members">) => {
     return ctx.db.get(memberId);
 }
 
-const getMember = async (ctx: QueryCtx,
+const getMember = async (
+    ctx: QueryCtx,
     workspaceId: Id<"workspaces">,
      userId: Id<"users">) => {
         return ctx.db.query("members")
         .withIndex("by_workspace_id_user_id", (q) =>
         q.eq("workspaceId", workspaceId).eq("userId", userId))
         .unique();
-}
+};
 
 export const get = query({
     args: {
@@ -75,7 +81,7 @@ export const get = query({
         }
 
         let _conversationId = args.conversationId;
-        if(!args.conversationId && args.channelId && args.parentMessageId){
+        if(!args.conversationId && !args.channelId && args.parentMessageId){
             const parentMessage = await ctx.db.get(args.parentMessageId);
 
             if(!parentMessage){
@@ -107,7 +113,9 @@ export const get = query({
 
                         const reactions = await populateReactions(ctx, message._id);
                         const thread = await populateThread(ctx, message._id);
+                        
                         const image = message.image ? await ctx.storage.getUrl(message.image) : undefined;
+                        console.log("Fetched image URL:", image); // <-- Add this log
 
                         const reactionsWithCounts = reactions.map((reaction) => {
                             return {
@@ -188,12 +196,15 @@ export const create = mutation({
         if(!member){
             throw new Error(" Member Unauthorized");
         }
+        console.log("Image ID before insert:", args.image); // <-- Add this log
 
         //handle conversationId
         let _conversationId = args.conversationId;
 
+             
+
         //Only possible if we are replying in a thread in 1:1 conversation
-        if(!args.conversationId&& args.channelId && args.parentMessageId){
+        if(!args.conversationId&& !args.channelId && args.parentMessageId){
             const parentMessage = await ctx.db.get(args.parentMessageId);
 
             if(!parentMessage){
@@ -202,6 +213,8 @@ export const create = mutation({
 
             _conversationId = parentMessage.conversationId;
         }
+
+         
 
         const messageId = await ctx.db.insert("messages", {
             memberId: member._id,
@@ -214,6 +227,7 @@ export const create = mutation({
             
         });
 
+        
         return messageId;
     },
-})
+});
