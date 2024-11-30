@@ -13,6 +13,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
 import { Reactions } from "./reactions";
 import { usePanel } from "@/hooks/use-panel";
+import { ThreadBar } from "./ThreadBar";
 
 const Editor = dynamic(() => import("@/components/ui/editor"), { ssr: false });
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
@@ -39,6 +40,7 @@ interface MessageProps {
   hideThreadButton?: boolean;
   threadCount?: number;
   threadImage?: string;
+  threadName?: string;
   threadTimestamp?: number;
 }
 
@@ -63,9 +65,10 @@ export const Message = ({
   hideThreadButton,
   threadCount,
   threadImage,
+  threadName,
   threadTimestamp,
 }: MessageProps) => {
-  const {parentMessageId ,onOpenMessage, onClose} = usePanel();
+  const {parentMessageId ,onOpenMessage, onClose, onOpenProfile} = usePanel();
   const [ConfirmDialog, comfirm] = useConfirm(
     "Are you sure?",
     "This action is irreversible"
@@ -77,7 +80,7 @@ export const Message = ({
 
   const {mutate: toggleReaction, isPending: isTogglingReaction} = useToggleReaction();
 
-  const isPending = isUpdatingMessage;
+  const isPending = isUpdatingMessage || isTogglingReaction;
 
   const handleReaction = (value: string) => {
     toggleReaction(
@@ -165,6 +168,13 @@ export const Message = ({
                   </span>
                 ) : null}
                  <Reactions data={reactions}  onChange={handleReaction}/>
+                 <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                name={threadName}
+                timestamp={threadTimestamp}
+                onClick={() => onOpenMessage(id)}
+              />
               </div>
             )}
           </div>
@@ -197,7 +207,7 @@ export const Message = ({
         )}
       >
         <div className="flex items-start gap-2">
-          <button>
+          <button onClick={() => onOpenProfile(memberId)}>
             <Avatar className=" rounded-md ">
               <AvatarImage src={authorImage} className="rounded-md" />
               <AvatarFallback className="rounded-md bg-sky-500 text-white text-xs">
@@ -221,6 +231,7 @@ export const Message = ({
                 <button
                   className="font-bold text-primary hover:underline"
                   onAbort={() => {}}
+                  onClick={() => onOpenProfile(memberId)}
                 >
                   {authorName}
                 </button>
@@ -237,6 +248,13 @@ export const Message = ({
                 <span className="text-sm text-muted-foreground">(edited)</span>
               ) : null}
               <Reactions data={reactions}  onChange={handleReaction}/>
+              <ThreadBar
+                count={threadCount}
+                image={threadImage}
+                name={threadName}
+                timestamp={threadTimestamp}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>
