@@ -14,6 +14,7 @@ import { on } from "events";
 import { useState } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
+import EmojiPicker from "@emoji-mart/react";
 
 interface EmojiPopoverProps {
   children: React.ReactNode;
