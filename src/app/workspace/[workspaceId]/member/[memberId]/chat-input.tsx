@@ -1,6 +1,6 @@
 import { useCreateMessage } from '@/features/messages/api/use-create-message';
 import { useGenerateUploadUrl } from '@/features/upload/api/use-generate-upload-url';
-import { useChannelId } from '@/hooks/use-channel-id';
+
 import { useWorkspaceId } from '@/hooks/use-workspace-id';
 import dynamic from 'next/dynamic';
 import Quill from 'quill';
@@ -30,7 +30,7 @@ export const ChatInput = ({placeholder, conversationId}: ChatInputProps) => {
   const editorRef = useRef<Quill | null>(null);
 
   const workspaceId = useWorkspaceId();
-  const channelId = useChannelId();
+  
   const {mutate: generateUploadUrl} = useGenerateUploadUrl();
   const {mutate: createMessage} = useCreateMessage();
 
@@ -82,7 +82,7 @@ export const ChatInput = ({placeholder, conversationId}: ChatInputProps) => {
     
      {throwError: true});
     setEditorKey((prevKey) => prevKey + 1);
-  }catch(error){
+  }catch{
     toast.error("Error sending message");
   }finally{
     setIsPending(false);
