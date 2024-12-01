@@ -1,13 +1,13 @@
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { useCreateChannelModal } from "../store/use-create-channel-modal";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
-import { useCreateChannel } from "../api/use-create-channel";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { toast } from "sonner";
+import { DialogTitle } from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
+import { useCreateChannel } from "../api/use-create-channel";
+import { useCreateChannelModal } from "../store/use-create-channel-modal";
 
 export const CreateChannelModal = () => {
   const workspaceId = useWorkspaceId();

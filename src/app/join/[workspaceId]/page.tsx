@@ -1,19 +1,17 @@
 "use client";
 
-import Image from "next/image";
-import VerificationInput from "react-verification-input";
-import OtpInput from "react-otp-input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useGetWorkspaceInfo } from "@/features/workspaces/api/use-get-workspace-info";
-import { Loader } from "lucide-react";
 import { useJoin } from "@/features/workspaces/api/use-join";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
+import { Loader } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import OtpInput from "react-otp-input";
+import { toast } from "sonner";
 
 interface JoinPageProps {
   params: {

@@ -3,8 +3,8 @@ import { useGetWorkspaces } from "@/features/workspaces/api/use-get-workspaces";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useCreateWorkspaceModal } from "@/features/workspaces/store/use-create-workspace-modal";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { Loader, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 export const WorkspaceSwitcher = () => {

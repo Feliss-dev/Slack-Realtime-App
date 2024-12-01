@@ -1,17 +1,17 @@
+import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Doc } from "../../../../convex/_generated/dataModel";
 import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
-import { Hint } from "@/components/hint";
-import { PreferencesModal } from "./preferences-modal";
 import { useState } from "react";
+import { Doc } from "../../../../convex/_generated/dataModel";
 import { InviteModal } from "./invite-modal";
+import { PreferencesModal } from "./preferences-modal";
 
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;
