@@ -24,25 +24,26 @@ export const Toolbar = () => {
 
   const router = useRouter();
   const { data } = useGetWorkspace({ id: workspaceId });
-  const {data: channels} = useGetChannels({ workspaceId });
-  const {data: members} = useGetMembers({ workspaceId });
+  const { data: channels } = useGetChannels({ workspaceId });
+  const { data: members } = useGetMembers({ workspaceId });
   const [open, setOpen] = useState(false);
 
-  const onChannelClick = (channelId:string) => {
+  const onChannelClick = (channelId: string) => {
     setOpen(false);
     router.push(`/workspace/${workspaceId}/channel/${channelId}`);
-  }
+  };
 
-  const onMemberClick = (memberId:string) => {
+  const onMemberClick = (memberId: string) => {
     setOpen(false);
     router.push(`/workspace/${workspaceId}/member/${memberId}`);
-  }
+  };
 
   return (
     <nav className="bg-[#481349] flex item-center justify-between h-10 p-1.5">
       <div className="flex-1"></div>
       <div className="min-w-[280px] max-[642px] grow-[2] shrink">
-        <Button onClick={() => setOpen(true)}
+        <Button
+          onClick={() => setOpen(true)}
           size="sm"
           className="bg-accent/25 hover:bg-accent-25 w-full justify-start h-7 px-2"
         >
@@ -54,28 +55,26 @@ export const Toolbar = () => {
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Channels">
-                {channels?.map((channel) => (
-                     <CommandItem onSelect={() => onChannelClick(channel._id)}>
-                        
-                        {channel.name}
-                        
-                        </CommandItem>
-                ))}
-             
-              
+              {channels?.map((channel) => (
+                <CommandItem
+                  key={channel._id}
+                  onSelect={() => onChannelClick(channel._id)}
+                >
+                  {channel.name}
+                </CommandItem>
+              ))}
             </CommandGroup>
             <CommandSeparator />
             <CommandGroup heading="Member">
-              <CommandItem>
               {members?.map((member) => (
-                     <CommandItem onSelect={()=> onMemberClick(member._id)}>
-                       
-                        {member.user.name}
-                        
-                        </CommandItem>
-                ))}
-                <CommandShortcut>⌘P</CommandShortcut>
-              </CommandItem>
+                <CommandItem
+                  key={member._id}
+                  onSelect={() => onMemberClick(member._id)}
+                >
+                  {member.user.name}
+                </CommandItem>
+              ))}
+              <CommandShortcut>⌘P</CommandShortcut>
             </CommandGroup>
           </CommandList>
         </CommandDialog>

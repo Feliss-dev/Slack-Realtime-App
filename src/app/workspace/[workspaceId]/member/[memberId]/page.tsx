@@ -52,10 +52,10 @@ const MemberIdPage = () => {
     }
 
   return (
-    <div>
+    
 
         <Conversation id={conversationId}/>
-    </div>
+    
   )
 }
 

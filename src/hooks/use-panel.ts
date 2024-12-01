@@ -3,8 +3,8 @@ import { useProfileMemberId } from "@/features/members/store/use-profile-member-
 
 
 export const usePanel = () => {
-    const [parentMessageId, setParentMessageId] = useParentMessageId();
-    const [profileMemberId, setProfileMemberId] = useProfileMemberId();
+    const { parentMessageId, setParentMessageId } = useParentMessageId();
+    const { profileMemberId, setProfileMemberId } = useProfileMemberId();
 
     const onOpenProfile = (memberId: string) => {
         setProfileMemberId(memberId);

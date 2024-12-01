@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { XIcon } from "lucide-react";
 
 interface ThumbnailProps {
@@ -23,6 +23,7 @@ export const Thumbnail = ({ url }: ThumbnailProps) => {
         </div>
       </DialogTrigger>
       <DialogContent className="max-w-[800px] border-none bg-transparent p-0 shadow-none">
+        <DialogTitle/>
         <img
           src={url}
           alt="Message image"
