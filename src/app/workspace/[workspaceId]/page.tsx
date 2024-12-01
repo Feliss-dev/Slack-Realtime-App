@@ -5,7 +5,7 @@ import { useCreateChannelModal } from "@/features/channels/store/use-create-chan
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { Loader, Loader2, TriangleAlert } from "lucide-react";
+import { Loader, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 

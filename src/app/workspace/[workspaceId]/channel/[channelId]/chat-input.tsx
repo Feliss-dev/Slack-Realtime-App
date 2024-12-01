@@ -2,11 +2,10 @@ import { useCreateMessage } from '@/features/messages/api/use-create-message';
 import { useGenerateUploadUrl } from '@/features/upload/api/use-generate-upload-url';
 import { useChannelId } from '@/hooks/use-channel-id';
 import { useWorkspaceId } from '@/hooks/use-workspace-id';
-import dynamic from 'next/dynamic'
-import { platform } from 'os';
+import dynamic from 'next/dynamic';
 import Quill from 'quill';
 
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { Id } from '../../../../../../convex/_generated/dataModel';
 
@@ -16,18 +15,18 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
-type createMessageValues = {
+type CreateMessageValues = {
   channelId: Id<"channels">;
   workspaceId: Id<"workspaces">;
   body: string;
-  image?: Id<"_storage"> | undefined;
+  image: Id<"_storage"> | undefined;
 };
 
 export const ChatInput = ({placeholder}: ChatInputProps) => {
   const [editorKey, setEditorKey] = useState(0);
-  const editorRef = useRef<Quill | null>(null);
-
+  
   const [isPending, setIsPending] = useState(false);
+  const editorRef = useRef<Quill | null>(null);
 
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
@@ -46,7 +45,7 @@ export const ChatInput = ({placeholder}: ChatInputProps) => {
 
     editorRef?.current?.enable(false);
 
-    const values: createMessageValues = {
+    const values: CreateMessageValues = {
       channelId,
       workspaceId,
       body,
@@ -56,7 +55,7 @@ export const ChatInput = ({placeholder}: ChatInputProps) => {
     if(image){
       const url = await generateUploadUrl({}, {throwError: true});
 
-      console.log({url});
+      console.log({body, image});
 
       if(!url){
         throw new Error("Failed to generate upload url");
@@ -70,18 +69,17 @@ export const ChatInput = ({placeholder}: ChatInputProps) => {
 
       if(!result.ok){
         throw new Error("Failed to upload file");
+        
       }
       const {storageId} = await result.json();
 
       values.image = storageId;
     }
 
-    await createMessage({
-      workspaceId,
-      channelId,
-      body,
+    await createMessage(
+      values,
     
-    }, {throwError: true});
+     {throwError: true});
     setEditorKey((prevKey) => prevKey + 1);
   }catch(error){
     toast.error("Error sending message");

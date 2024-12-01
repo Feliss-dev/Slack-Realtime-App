@@ -4,8 +4,8 @@ import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { IconType } from "react-icons/lib";
 
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 
 const sidebarItemVariants = cva(
   "flex items-center gap-1.5 justify-start font-normal h-7 px-[18px] text-sm overflow-hidden",
