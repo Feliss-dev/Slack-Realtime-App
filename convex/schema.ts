@@ -1,9 +1,6 @@
+import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
-import {v} from "convex/values";
-import { authTables } from "@convex-dev/auth/server"; 
-import { QueryCtx } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
-import { update } from "./channels";
+import { v } from "convex/values";
 
 
 
