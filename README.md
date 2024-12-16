@@ -64,3 +64,9 @@ Some functions of this app:
 ![alt text](image-15.png)
 
     Database using Convex Cloud
+
+![alt text](image-16.png)
+Add the provider key to the database to make the oauth work
+
+The step to do this system
+
