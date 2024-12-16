@@ -1,44 +1,66 @@
 # Slack-Realtime-App
-Describe later
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Some functions of this app:
+📡 Real time communication
+👍 Reactions to messages
+🧵 Threads / Replies system
+✏️ Editing messages 
+🗑️ Deleting messages 
+🔐 Role based access control 
+🖼️ Image attachments 
+🔒 Authentication with Next auth v5
+📺 Channel creation
+🏢 Workspace creation
+✉️ Invite system / Invite codes
+💬 Direct messaging
+👥 User profiles
+⚛️ Framework Next.js 14
+🚀 Deployment on Vercel
+🎨 Shadcn UI & Tailwind CSS
 
-## Getting Started
+# Authentication with Next auth v5
+    Login in with credential, google or github
+![alt text](image.png)
 
-First, run the development server:
+    Sign up with the similar feature
+![alt text](image-1.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+    General layout
+![alt text](image-2.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    Create workspace for new members
+![alt text](image-3.png)
+![alt text](image-4.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    Workspace contains many channels and many direct message
+![alt text](image-5.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    Add new channelchannel
+![alt text](image-8.png)
 
-## Learn More
+    Delete or edit the workspace attribute
+![alt text](image-6.png)
 
-To learn more about Next.js, take a look at the following resources:
+    Invite people to workspace by link
+![alt text](image-7.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    Search cho existing members or channels
+![alt text](image-9.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    Realtime message with customize styles
+![alt text](image-10.png)
 
-## Deploy on Vercel
+    Add reaction to each message
+![alt text](image-11.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    Reply message in another thread
+![alt text](image-12.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    Edit the message
+![alt text](image-13.png)
+![alt text](image-14.png)
 
+    Send file(image type first)
+![alt text](image-15.png)
 
-bun run dev
-
-bunx convex dev
+    Database using Convex Cloud

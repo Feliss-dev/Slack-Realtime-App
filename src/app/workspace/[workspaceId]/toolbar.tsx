@@ -16,6 +16,8 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { Info, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { DialogTitle } from "@/components/ui/dialog";
 
 export const Toolbar = () => {
   const workspaceId = useWorkspaceId();
@@ -49,6 +51,9 @@ export const Toolbar = () => {
           <span className="text-white text-xs">Search {data?.name}</span>
         </Button>
         <CommandDialog open={open} onOpenChange={setOpen}>
+        <VisuallyHidden>
+            <DialogTitle>Search Dialog</DialogTitle>
+          </VisuallyHidden>
           <CommandInput placeholder="Type a command or search..." />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
