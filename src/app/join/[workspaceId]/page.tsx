@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,10 @@ import { useEffect, useMemo, useState } from "react";
 import OtpInput from "react-otp-input";
 import { toast } from "sonner";
 
-interface JoinPageProps {
-  params: {
-    workspaceId: string;
-  };
-}
 
-const JoinPage = ({  }: JoinPageProps) => {
+
+
+const JoinPage = () => {
   const router = useRouter();
 
   const workspaceId = useWorkspaceId();

@@ -86,7 +86,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
       };
 
       if (image) {
-        const url = await generateUploadUrl({}, { throwError: true });
+        const url = await generateUploadUrl("", { throwError: true });
 
         console.log({ body, image });
 

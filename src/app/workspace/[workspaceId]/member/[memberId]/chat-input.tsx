@@ -1,20 +1,20 @@
-import { useCreateMessage } from '@/features/messages/api/use-create-message';
-import { useGenerateUploadUrl } from '@/features/upload/api/use-generate-upload-url';
+import { useCreateMessage } from "@/features/messages/api/use-create-message";
+import { useGenerateUploadUrl } from "@/features/upload/api/use-generate-upload-url";
 
-import { useWorkspaceId } from '@/hooks/use-workspace-id';
-import dynamic from 'next/dynamic';
-import Quill from 'quill';
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import dynamic from "next/dynamic";
+import Quill from "quill";
 
-import { useRef, useState } from 'react';
-import { toast } from 'sonner';
-import { Id } from '../../../../../../convex/_generated/dataModel';
+import { useRef, useState } from "react";
+import { toast } from "sonner";
+import { Id } from "../../../../../../convex/_generated/dataModel";
 
 const Editor = dynamic(() => import("@/components/ui/editor"), { ssr: false });
 
 interface ChatInputProps {
   placeholder?: string;
-  conversationId: Id<"conversations">
-};
+  conversationId: Id<"conversations">;
+}
 
 type CreateMessageValues = {
   conversationId: Id<"conversations">;
@@ -23,81 +23,81 @@ type CreateMessageValues = {
   image: Id<"_storage"> | undefined;
 };
 
-export const ChatInput = ({placeholder, conversationId}: ChatInputProps) => {
+export const ChatInput = ({ placeholder, conversationId }: ChatInputProps) => {
   const [editorKey, setEditorKey] = useState(0);
-  
+
   const [isPending, setIsPending] = useState(false);
   const editorRef = useRef<Quill | null>(null);
 
   const workspaceId = useWorkspaceId();
-  
-  const {mutate: generateUploadUrl} = useGenerateUploadUrl();
-  const {mutate: createMessage} = useCreateMessage();
+
+  const { mutate: generateUploadUrl } = useGenerateUploadUrl();
+  const { mutate: createMessage } = useCreateMessage();
 
   const handleSubmit = async ({
     body,
-    image
+    image,
   }: {
     body: string;
     image: File | null;
   }) => {
-   try{
-    setIsPending(true);
+    try {
+      setIsPending(true);
 
-    editorRef?.current?.enable(false);
+      editorRef?.current?.enable(false);
 
-    const values: CreateMessageValues = {
-      conversationId,
-      workspaceId,
-      body,
-      image: undefined,
-    };
-    
-    if(image){
-      const url = await generateUploadUrl({}, {throwError: true});
+      const values: CreateMessageValues = {
+        conversationId,
+        workspaceId,
+        body,
+        image: undefined,
+      };
 
-      console.log({body, image});
+      if (image) {
+        const url = await generateUploadUrl("", { throwError: true });
 
-      if(!url){
-        throw new Error("Failed to generate upload url");
+        console.log({ body, image });
+
+        if (!url) {
+          throw new Error("Failed to generate upload url");
+        }
+
+        const result = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": image.type },
+          body: image,
+        });
+
+        if (!result.ok) {
+          throw new Error("Failed to upload file");
+        }
+        const { storageId } = await result.json();
+
+        values.image = storageId;
       }
 
-      const result = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": image.type },
-        body: image,
-      });
+      await createMessage(
+        values,
 
-      if(!result.ok){
-        throw new Error("Failed to upload file");
-        
-      }
-      const {storageId} = await result.json();
-
-      values.image = storageId;
+        { throwError: true }
+      );
+      setEditorKey((prevKey) => prevKey + 1);
+    } catch {
+      toast.error("Error sending message");
+    } finally {
+      setIsPending(false);
+      editorRef?.current?.enable(true);
     }
-
-    await createMessage(
-      values,
-    
-     {throwError: true});
-    setEditorKey((prevKey) => prevKey + 1);
-  }catch{
-    toast.error("Error sending message");
-  }finally{
-    setIsPending(false);
-    editorRef?.current?.enable(true);
-  }
   };
   return (
-    <div className='px-5 w-full'>
-        <Editor 
+    <div className="px-5 w-full">
+      <Editor
         key={editorKey}
         placeholder={placeholder}
         onSubmit={handleSubmit}
         disabled={isPending}
         innerRef={editorRef}
-        />
-        </div>
-  )
-}
+      />
+    </div>
+  );
+};
